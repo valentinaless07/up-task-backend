@@ -107,7 +107,18 @@ const buscarColaborador = async (req, res) => {
 }
 
 const agregarColaborador = async (req, res) => {
-    
+    const proyecto = await Proyecto.findById(req.params.id)
+    if(!proyecto) {
+        const error = new Error("Proyecto No Encontrado")
+        return res.status(404).json({msg: error.message})
+    }
+
+    if(proyecto.creador.toString() !== req.usuario._id.toString()){
+        const error = new Error("Acción no válida")
+        return res.status(401).json({msg: error.message})
+    }
+
+    console.log(req.body)
 }
 
 const eliminarColaborador = async (req, res) => {
