@@ -118,7 +118,29 @@ const agregarColaborador = async (req, res) => {
         return res.status(401).json({msg: error.message})
     }
 
-    console.log(req.body)
+    const {email} = req.body
+    
+    const usuario = await Usuario.findOne({email}).select('-confimado -createdAt -password -token -updatedAt -__v')
+
+    if(!usuario){
+        const error = new Error("Usuario no encontrado")
+        return res.status(404).json({msg: error.message})
+    }
+
+    if(proyecto.creador.toString() === usuario._id.toString()){
+        const error = new Error("El creador del proyecto no puede ser colaborador")
+        return res.status(400).json({msg: error.message})
+    }
+
+    if(proyecto.colaboradores.includes(usuario._id)){
+        const error = new Error("El Usuario ya pertenece al proyecto")
+        return res.status(400).json({msg: error.message})
+    }
+    
+    proyecto.colaboradores.push(usuario._id)
+    await proyecto.save()
+    res.json({msg: 'Colaborador agregado correctamente'})
+
 }
 
 const eliminarColaborador = async (req, res) => {
