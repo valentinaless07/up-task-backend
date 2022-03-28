@@ -115,6 +115,7 @@ const cambiarEstado = async (req, res) => {
     }
 
     tarea.estado = !tarea.estado
+    tarea.completado = req.usuario._id
 
     await tarea.save()
 
