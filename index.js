@@ -43,6 +43,21 @@ app.use('/api/tareas', tareaRoutes)
 
 const PORT = process.env.PORT || 4000
 
-app.listen(PORT, () => {
+const servidor = app.listen(PORT, () => {
     console.log(`servidor corriendo en el puerto ${PORT}`)
+})
+
+//Socket Io
+
+import { Server } from 'socket.io'
+
+const io = new Server(servidor, {
+    pingTimeout: 60000,
+    cors: {
+        origin: process.env.FRONTEND_URL
+    }
+})
+
+io.on("connection", (socket) => {
+    console.log('Conectando a socket io')
 })
