@@ -6,12 +6,14 @@ export const emailRegistro = async (datos) => {
     const transport = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
-      secure: false,
-      requireTLS: true,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-      }
+      },
+      tls: {
+        ciphers:'SSLv3'
+    }
     });
 
       const info = await transport.sendMail({
@@ -35,12 +37,14 @@ export const emailOlvidePassword = async (datos) => {
   const transport = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
-    secure: false,
-    requireTLS: true,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
-    }
+    },
+    tls: {
+      ciphers:'SSLv3'
+  }
   });
 
     const info = await transport.sendMail({
