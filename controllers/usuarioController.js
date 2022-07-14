@@ -14,6 +14,7 @@ import { emailRegistro, emailOlvidePassword } from '../helpers/email.js';
         }
 
         try {
+            
             const usuario = new Usuario(req.body)
             usuario.token = generarId()
             await usuario.save()
@@ -24,7 +25,7 @@ import { emailRegistro, emailOlvidePassword } from '../helpers/email.js';
                 token: usuario.token
             })
 
-            res.json({msg: 'Usuario Creado, Revisa tu Email para confirmar tu cuenta'})
+            res.json({msg: 'Usuario creado con éxito'})
         } catch (error) {
             console.log(error)
         }
